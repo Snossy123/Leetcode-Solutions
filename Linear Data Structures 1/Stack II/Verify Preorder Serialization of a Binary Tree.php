@@ -6,13 +6,22 @@ class Solution {
      */
     function isValidSerialization($preorder) {
         $list = explode(',', $preorder);
-
-        for ($i = $c = 0; $c >= 0 && $i < count($list); $i++) {
-            if ($list[$i] === '#') {
-                $c--; } else { $c++;
-            }
+        $st = [];
+        for ($i = 0; $i < count($list); $i++) {
+            if ($list[$i] === '#' && count($st) > 1 && end($st) === '#' && is_numeric($st[count($st)-2])) {
+                    array_pop($st);
+                    array_pop($st);
+                    while(count($st) > 1 && end($st) === '#'){
+                        array_pop($st);
+                        array_pop($st);
+                    }
+                    $st[] = '#';
+            } 
+            else { 
+                $st[] = $list[$i];
+            } 
         }
 
-        return $c === -1 && $i === count($list);
+        return count($st)==1 && end($st) === '#'??false;
     }
 }
