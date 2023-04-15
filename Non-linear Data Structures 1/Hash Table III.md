@@ -319,3 +319,53 @@ class Solution {
     }
 }
 ```
+## Time Based Key-Value Store
+Problem Link: https://leetcode.com/problems/time-based-key-value-store/
+
+```php
+class TimeMap {
+    private $time_map;
+
+    public function __construct() {
+        $this->time_map = array();
+    }
+
+    public function set($key, $value, $timestamp) {
+        // Insert new key (if not present), then add timestamped value
+        if (!isset($this->time_map[$key])) {
+            $this->time_map[$key] = array();
+        }
+        array_push($this->time_map[$key], array($timestamp, $value));
+    }
+
+    public function get($key, $timestamp) {
+        // There are several cases that we need to handle;
+        // PHP's binary search is not built-in, so we can use custom implementation
+        if (isset($this->time_map[$key])) {
+            $tv = $this->time_map[$key];
+            $left = 0;
+            $right = count($tv) - 1;
+
+            while ($left <= $right) {
+                $mid = floor(($left + $right) / 2);
+                if ($tv[$mid][0] == $timestamp) {
+                    return $tv[$mid][1];
+                } elseif ($tv[$mid][0] < $timestamp) {
+                    $left = $mid + 1;
+                } else {
+                    $right = $mid - 1;
+                }
+            }
+
+            // Special case for i == 0 is treated explicitly
+            if ($right >= 0) {
+                return $tv[$right][1];
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+}
+
+```
