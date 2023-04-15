@@ -1,82 +1,103 @@
-## Kth Missing Positive Number
-Problem Link: https://leetcode.com/problems/kth-missing-positive-number/
+## Find Duplicate File in System
+Problem Link: https://leetcode.com/problems/find-duplicate-file-in-system/
 
 ```php
 class Solution {
 
     /**
-     * @param Integer[] $arr
-     * @param Integer $k
-     * @return Integer
+     * @param String[] $paths
+     * @return String[][]
      */
-    function findKthPositive($arr, $k) {
-        $ans = [];
-        $x = 1;
-        $i=0;
-        while(true){  
-            if($x == $arr[$i]){ 
-                $i++;
-                $x++;
+    function findDuplicate($paths) {
+        // content => path
+        $dic = [];
+        foreach($paths as $path){
+            $arr = explode(" ", $path);
+            $p = $arr[0];
+            for($i=1; $i<count($arr); $i++){
+                $arr2 = explode("(", $arr[$i]);
+                $fName = $arr2[0];
+                $content = substr($arr2[1], 0, strlen($arr2[1])-1);
+                $filepath = $p . '/' . $fName;
+                if(isset($dic[$content])){
+                    $dic[$content][] = $filepath;
+                }else{
+                    $dic[$content] = [$filepath];
+                }
             }
-            else{ 
-                $ans[] = $x;
-                $x++;
-                $k--;
-            }
-            if($k==0){
-                return end($ans);
-            }
+        } 
+        $ans=[];
+        foreach($dic as $k=>$v){
+            if(count($v)>1)
+                $ans[]=$v;
         }
+        return $ans;
     }
 }
 ```
 
-## First Unique Character in a String
-Problem Link: https://leetcode.com/problems/first-unique-character-in-a-string/
+## Flip Columns For Maximum Number of Equal Rows
+Problem Link: https://leetcode.com/problems/flip-columns-for-maximum-number-of-equal-rows/description/
 
 ```php
 class Solution {
 
     /**
-     * @param String $s
+     * @param Integer[][] $matrix
      * @return Integer
      */
-    function firstUniqChar($s) {
-        $frq = array_count_values(str_split($s));
-        $i=0; $val = -1;
-        foreach($frq as $k=>$v){
-            if($v==1) {
-                $val = $k; break;
+    function maxEqualRowsAfterFlips($M) {
+        $map = array();
+
+        foreach ($M as &$r) {
+            // generate the pattern for the current row
+            $s = str_repeat('T', count($r));
+            for ($i = 1; $i < count($r); $i++) {
+                if ($r[$i] != $r[0]) $s[$i] = 'F';
             }
-            $i++;
+            // put the pattern to map
+            if (!isset($map[$s])) {
+                $map[$s] = 0;
+            }
+            $map[$s]++;
         }
 
-        return $val==-1?-1:strpos($s, $val);
+        // find the highest freq of the pattern
+        $ans = 0;
+        foreach ($map as $p) {
+            $ans = max($ans, $p);
+        }
+
+        return $ans;
     }
 }
 ```
 
-## Intersection of Two Arrays II
+## Group Anagrams
 Problem Link: https://leetcode.com/problems/intersection-of-two-arrays-ii/
 
 ```php
 class Solution {
 
     /**
-     * @param Integer[] $nums1
-     * @param Integer[] $nums2
-     * @return Integer[]
+     * @param String[] $strs
+     * @return String[][]
      */
-    function intersect($nums1, $nums2) {
-        $frq1 = array_count_values($nums1);
-        $frq2 = array_count_values($nums2);
-        $intky = array_intersect(array_keys($frq1), array_keys($frq2));
-        $ans=[];
-        foreach($intky as $k){
-            $n = min($frq1[$k], $frq2[$k]); 
-            for($i=0; $i<$n; $i++){
-                $ans[] = $k;
+    function groupAnagrams($strs) {
+        $dic = [];
+        foreach($strs as $s){
+            $arr = str_split($s);
+            sort($arr);
+            $org = implode('', $arr);
+            if(isset($dic[$org])){
+                $dic[$org][] = $s;
+            }else{
+                $dic[$org] = [$s];
             }
+        }
+        $ans = [];
+        foreach($dic as $k=>$v){
+            $ans[] = $v;
         }
         return $ans;
     }
@@ -113,73 +134,63 @@ class Solution {
 }
 ```
 
-## 	Verifying an Alien Dictionary
-Problem Link: https://leetcode.com/problems/verifying-an-alien-dictionary/
+## 	Replace Words
+Problem Link: https://leetcode.com/problems/replace-words/
 
 ```php
 class Solution {
-    function checkInc($frq, $w1, $w2){
-        for($i=0; $i<min(strlen($w1), strlen($w2)); $i++){
-            if($frq[$w1[$i]] < $frq[$w2[$i]]) return true;
-            if($frq[$w1[$i]] > $frq[$w2[$i]]) return false;
-        }
-        if(strlen($w1) > strlen($w2) && strpos($w1, $w2) !== false) return false;
-        return true;
-    }
+
     /**
-     * @param String[] $words
-     * @param String $order
-     * @return Boolean
+     * @param String[] $dictionary
+     * @param String $sentence
+     * @return String
      */
-    function isAlienSorted($words, $order) {
-        $frq = [];
-        for($i=0; $i<strlen($order); $i++)
-            $frq[$order[$i]] = $i;
-        for($i=0; $i<count($words)-1; $i++)
-          if(!$this->checkInc($frq, $words[$i], $words[$i+1]))
-              return false; 
-        return true;
+    function replaceWords($dictionary, $sentence) {
+        $dic = [];
+        foreach($dictionary as $d) $dic[$d] = true;
+        $arr = explode(' ', $sentence);
+        $ans = [];
+        foreach($arr as $w){
+            for($i=1; $i<strlen($w); $i++){
+                $s = substr($w, 0, $i); 
+                if(isset($dic[$s])){
+                    $w = $s; break;
+                }                
+            }
+            $ans[]=$w;
+        }
+        return implode(' ', $ans);
     }
 }
 ```
 
-##  Minimum Index Sum of Two Lists
-Problem Link: https://leetcode.com/problems/minimum-index-sum-of-two-lists/
+##  Sum of Beauty of All Substrings
+Problem Link: https://leetcode.com/problems/sum-of-beauty-of-all-substrings/
 
 ```php
 class Solution {
 
     /**
-     * @param String[] $list1
-     * @param String[] $list2
-     * @return String[]
+     * @param String $s
+     * @return Integer
      */
-    function findRestaurant($list1, $list2) {
-        $common = array_values(array_intersect($list1, $list2)); 
-        $sum=[];
-        for($i=0; $i<count($common); $i++) 
-            $sum[$common[$i]] = 0; 
-
-        for($i=0; $i<count($list1); $i++) 
-            if(isset($sum[$list1[$i]])) 
-                $sum[$list1[$i]] += $i; 
-
-        for($i=0; $i<count($list2); $i++) 
-            if(isset($sum[$list2[$i]])) 
-                $sum[$list2[$i]] += $i;  
-
-        $min = min(array_values($sum));
-        $ans = [];
-        foreach($sum as $k=>$v) 
-            if($v == $min) 
-                $ans[]=$k; 
+    function beautySum($s) {
+        $ans = 0;
+        for($i=0; $i<strlen($s)-2; $i++){
+            $arr=[];
+            for($j=$i; $j<strlen($s); $j++){
+                if(isset($arr[$s[$j]])){$arr[$s[$j]]++;}
+                else{$arr[$s[$j]]=1;}
+                $ans+= max(array_values($arr)) - min(array_values($arr));
+            }
+        }
         return $ans;
     }
-}
+} 
 ```
 
-## Longest Harmonious Subsequence
-Problem Link: https://leetcode.com/problems/longest-harmonious-subsequence/
+## Tuple with Same Product
+Problem Link: https://leetcode.com/problems/tuple-with-same-product/
 
 ```php
 class Solution {
@@ -188,114 +199,123 @@ class Solution {
      * @param Integer[] $nums
      * @return Integer
      */
-    function findLHS($nums) {
-        $frq = array_count_values($nums); 
-        $ans = 0;
-        for($i=0; $i<count($frq); $i++){
-            if(isset($frq[array_keys($frq)[$i]+1])){
-                $ans = max($ans, $frq[array_keys($frq)[$i]+1]+$frq[array_keys($frq)[$i]]);
+    function tupleSameProduct($nums) {
+        $prd = [];$res=0;
+        for($i=0; $i<count($nums); $i++){
+            for($j=0; $j<$i; $j++){
+                $prod = $nums[$i] * $nums[$j];
+                $res += 8*$prd[$prod];
+                ++$prd[$prod];
             }
         }
-        return $ans;
+        return $res;
     }
 }
 ```
 
-## Longest Word in Dictionary
-Problem Link: https://leetcode.com/problems/longest-word-in-dictionary/
+## Rabbits in Forest
+Problem Link: https://leetcode.com/problems/rabbits-in-forest/description/
+
+```php
+class Solution {
+    public function numRabbits($answers) {
+        if (count($answers) == 0) return 0;
+        
+        $map = array();
+        $sum = 0;
+        
+        // For each rabbit's answer
+        foreach ($answers as $i) {
+            if ($i == 0) {
+                $sum += 1;
+                continue;
+            }
+            
+            if (!isset($map[$i])) {
+                // If we haven't accounted for this rabbit color then account for the one telling us
+                // as well as the one that rabbit says is that color.
+                $map[$i] = 0;
+                $sum += ($i + 1);
+            } else {
+                $map[$i] = $map[$i] + 1;
+                // If there are k of each color then they are all present, remove them to allow the change to account for others.
+                if ($map[$i] == $i) { 
+                    unset($map[$i]);
+                }
+            }
+        }
+        return $sum;
+    }
+}
+
+```
+
+## 	Implement Magic Dictionary
+Problem Link: https://leetcode.com/problems/implement-magic-dictionary/description/
+
+```php
+class MagicDictionary {
+    private $dic;
+
+    public function __construct() {
+        // Initialize your data structure here.
+        $this->dic = array();
+    }
+
+    public function buildDict($dictionary) {
+        $this->dic = array_flip($dictionary);
+    }
+
+    public function search($searchWord) {
+        foreach ($this->dic as $word => $index) {
+            if (strlen($word) == strlen($searchWord)) {
+                $diff = 0;
+                for ($i = 0; $i < strlen($word); $i++) {
+                    if ($word[$i] != $searchWord[$i]) {
+                        $diff++;
+                    }
+                }
+                if ($diff == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+## 4Sum II
+Problem Link: https://leetcode.com/problems/4sum-ii/
 
 ```php
 class Solution {
 
     /**
-     * @param String[] $words
-     * @return String
+     * @param Integer[] $nums1
+     * @param Integer[] $nums2
+     * @param Integer[] $nums3
+     * @param Integer[] $nums4
+     * @return Integer
      */
-    function longestWord($words) {
-        $frq = array_count_values($words);
-        $ans = "";
-        foreach($words as $w){
-            $f=true;
-            for($i=strlen($w)-2; $i>-1; $i--){
-                $sub = substr($w, 0, $i+1); 
-                if(!isset($frq[$sub])){
-                    $f=false;
-                    break;
-                } 
-            } 
-            if($f && strlen($w) > strlen($ans)) $ans = $w; 
-            if($f && strlen($w) == strlen($ans)) $ans = min($ans, $w); 
+    function fourSumCount($nums1, $nums2, $nums3, $nums4) {
+      $res = 0;
+      $DP = [];
+      for($i=0; $i<count($nums1); $i++){
+          for($j=0; $j<count($nums2); $j++){
+              if(!isset($DP[$nums1[$i] + $nums2[$j]]))
+                $DP[$nums1[$i] + $nums2[$j]] = 1;
+              else
+                $DP[$nums1[$i] + $nums2[$j]] += 1;
+          }
+      } 
+      for($k=0; $k<count($nums3); $k++){
+        for($l=0; $l<count($nums4); $l++){ 
+          if(isset($DP[-1*($nums3[$k] + $nums4[$l])])) 
+            $res+=$DP[-1*($nums3[$k] + $nums4[$l])]; 
         }
-        return $ans;
-    }
-}
-```
-
-## 	Two Sum
-Problem Link: https://leetcode.com/problems/two-sum/
-
-```php
-class Solution {
-    /**
-     * @param Integer[] $nums
-     * @param Integer $target
-     * @return Integer[]
-     */
-    function twoSum($nums, $target) {
-        $frq = array_count_values($nums);
-        foreach($frq as $k=>$v){ 
-            if(
-                isset($frq[$target - $k]) && 
-                $target - $k != $k
-            ){
-                return ([array_search($k, $nums), 
-                        array_search($target - $k, 
-                        $nums)]);
-            }
-            if(
-                isset($frq[$target - $k]) && 
-                $target - $k == $k && 
-                $frq[$k]>1
-            ){
-                return ([
-                    array_search($k, $nums), 
-                    count($nums) - 1 - 
-                    array_search($target - $k, 
-                    array_reverse($nums))
-                    ]);
-            }
-        }
-        return [];
-    }
-}
-```
-
-## Isomorphic Strings
-Problem Link: https://leetcode.com/problems/isomorphic-strings/
-
-```php
-class Solution {
-    
-    /**
-     * @param String $s
-     * @param String $t
-     * @return Boolean
-     */
-    function isIsomorphic($s, $t) {
-        if(strlen($s)!=strlen($t)) return false;
-        return $this->check($s, $t)&&$this->check($t, $s);
-    }
-    function check($s, $t){
-        $f=[];
-        for($i=0; $i<strlen($s); $i++){ 
-            if(isset($f[$s[$i]])){
-                if($f[$s[$i]] !== $t[$i]) 
-                    return false; 
-            }else{
-                $f[$s[$i]] = $t[$i];  
-            }
-        }
-        return true;
+      }
+      return $res;
     }
 }
 ```
