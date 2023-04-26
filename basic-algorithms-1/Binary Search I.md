@@ -1,289 +1,338 @@
-## Number of Good Pairs
-Problem Link: https://leetcode.com/problems/number-of-good-pairs/
+## Arranging Coins
+Problem Link: https://leetcode.com/problems/arranging-coins/description/
 
-```php
-class Solution {
-    /**
-     * @param Integer[] $nums
-     * @return Integer
-     */
-    function numIdenticalPairs($nums) {
-        $freq = [];
-        $total = 0;
-        foreach($nums as $n){
-            if(!isset($freq[$n])) $freq[$n] = 0;
-            $total += $freq[$n];
-            $freq[$n]++;
-        }
-        return $total;
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var arrangeCoins = function(n) {
+    let s = 1;
+    let end = n;
+    let mid = Math.floor((s+end)/2);
+    while(s<=end){
+        let midfilled = mid*(mid+1)/2;
+        if(midfilled===n)return mid;
+        else if(midfilled<n) s=mid+1;
+        else end = mid-1;
+        mid = Math.floor((s+end)/2);
     }
-}
+    return s-1;
+};
 ```
 
-## Jewels and Stones
-Problem Link: https://leetcode.com/problems/jewels-and-stones/
+## Search Insert Position
+Problem Link: https://leetcode.com/problems/search-insert-position/description/
 
-```php
-class Solution {
-    /**
-     * @param String $jewels
-     * @param String $stones
-     * @return Integer
-     */
-    function numJewelsInStones($jewels, $stones) {
-        $jewdict = []; for($j=0; $j<strlen($jewels); $j++) $jewdict[$jewels[$j]] = true;
-        $ans = 0; for($s=0; $s<strlen($stones); $s++) if(isset($jewdict[$stones[$s]])) $ans++;
-        return $ans;
-    }
-}
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var searchInsert = function(nums, target) {
+    let s = 0;
+    let end = nums.length-1;
+    let mid = Math.floor((s+end)/2);
+    while(nums[mid]!==target && s<=end){ 
+        if(nums[mid]>target) end = mid-1;
+        else s=mid+1;
+        mid = Math.floor((s+end)/2);
+    }  
+    return mid===-1?0:nums[mid]===target?mid:nums[mid]<target?mid+1:mid-1;
+};
 ```
 
-## How Many Numbers Are Smaller Than the Current Number
-Problem Link: https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number/
+## Guess Number Higher or Lower
+Problem Link: https://leetcode.com/problems/guess-number-higher-or-lower/description/
 
-```php
-class Solution {
+```javascript
+/** 
+ * Forward declaration of guess API.
+ * @param {number} num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * var guess = function(num) {}
+ */
 
-    /**
-     * @param Integer[] $nums
-     * @return Integer[]
-     */
-    function smallerNumbersThanCurrent($nums) {
-        $hashTfreq = array_fill(0,102,0);
-        $hashT = array_fill(0,102,0);
-        for($i=0; $i<count($nums); $i++){
-           $hashT[$nums[$i]]++;
-           $hashTfreq[$nums[$i]]++;
-        } 
-        for($i=1; $i<count($hashT); $i++) $hashT[$i]+=$hashT[$i-1]; 
-        $ans=[];
-        for($i=0; $i<count($nums); $i++) $ans[] = $hashT[$nums[$i]] - $hashTfreq[$nums[$i]]; 
-        return $ans;
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var guessNumber = function(n) {
+    let s = 1;
+    let end = n;
+    let mid = Math.floor((s+end)/2);
+    while(guess(mid)!==0 && s<=end){
+        if(guess(mid)===1) s=mid+1;
+        else end = mid-1;
+        mid = Math.floor((s+end)/2);
     }
-}
+    return guess(mid)===0?mid:-1;
+};
 ```
 
-## 	N-Repeated Element in Size 2N Array
-Problem Link: https://leetcode.com/problems/n-repeated-element-in-size-2n-array/
+## 	Find Smallest Letter Greater Than Target
+Problem Link: https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/
 
-```php
-class Solution {
-
-    /**
-     * @param Integer[] $nums
-     * @return Integer
-     */
-    function repeatedNTimes($nums) {
-        $freq = array_count_values($nums); 
-        foreach($freq as $k=>$v) if($v==count($nums)/2) return $k; 
+```javascript
+function bs(arr, trg){
+    let s = 0;
+    let end = arr.length-1;
+    let mid = Math.floor((s+end)/2);
+    while(arr[mid]!==trg && s<=end){
+        if(arr[mid]<trg) s=mid+1;
+        else end = mid-1;
+        mid = Math.floor((s+end)/2);
     }
+    return arr[mid]===trg?mid:-1;
 }
+/**
+ * @param {character[]} letters
+ * @param {character} target
+ * @return {character}
+ */
+var nextGreatestLetter = function(letters, target) { 
+    for(var i=target.charCodeAt(0)-97+1; i<26; i++){
+        let ch = bs(letters, String.fromCodePoint(i+97));
+        if(ch !== -1) return String.fromCodePoint(i+97); 
+    }
+    return letters[0];
+};
 ```
 
-## 	Sum of Unique Elements
-Problem Link: https://leetcode.com/problems/sum-of-unique-elements/
+## 	Binary Search
+Problem Link: https://leetcode.com/problems/binary-search/description/
 
-```php
-class Solution {
-
-    /**
-     * @param Integer[] $nums
-     * @return Integer
-     */
-    function sumOfUnique($nums) {
-        $freq = array_count_values($nums); 
-        $ans=0; foreach($freq as $k=>$v) if($v==1) $ans+=$k; 
-        return $ans;
+```javascript
+function bs(arr, trg){
+    let s = 0;
+    let end = arr.length;
+    let mid = Math.floor((s+end)/2);
+    while(arr[mid]!==trg && s<=end){
+        if(arr[mid]<trg) s=mid+1;
+        else end = mid-1;
+        mid = Math.floor((s+end)/2);
     }
+    return arr[mid]===trg?mid:-1;
 }
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var search = function(nums, target) {
+    return bs(nums, target);
+};
 ```
 
-## Unique Number of Occurrences
-Problem Link: https://leetcode.com/problems/unique-number-of-occurrences/
+## Is Subsequence
+Problem Link: https://leetcode.com/problems/is-subsequence/description/
 
-```php
-class Solution {
-
-    /**
-     * @param Integer[] $arr
-     * @return Boolean
-     */
-    function uniqueOccurrences($arr) {
-        $freq = array_count_values($arr);
-        $unique = array_count_values($freq);
-        foreach($unique as $k=>$v) if($v > 1) return false;  
-        return true;
-    }
-}
-```
-
-## Subdomain Visit Count
-Problem Link: https://leetcode.com/problems/subdomain-visit-count/
-
-```php
-class Solution {
-
-    /**
-     * @param String[] $cpdomains
-     * @return String[]
-     */
-    function subdomainVisits($cpdomains) {
-        $frq=[];
-        foreach($cpdomains as $d){
-            $domain = explode(" ", $d);
-            $c = (int)$domain[0];
-            $d1 = $domain[1];
-            if(isset($frq[$d1])){
-                $frq[$d1]+=$c;
-            }else{
-                $frq[$d1]=$c;
-            }
-            $subd = explode(".", $d1);
-            if(count($subd)==3){
-                $d2 = $subd[1] . "." . $subd[2];
-                $d3 = $subd[2]; 
-                if(isset($frq[$d2])){
-                    $frq[$d2]+=$c;
-                }else{
-                    $frq[$d2]=$c;
-                }  
-            }else{
-                $d3 = $subd[1]; 
-            }
-            if(isset($frq[$d3])){
-                $frq[$d3]+=$c;
-            }else{
-                $frq[$d3]=$c;
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isSubsequence = function(s, t) {
+    let x = -1, c=0;
+    for(var i=0; i<s.length; i++){ 
+        for(var j=x+1; j<t.length; j++){
+            if(s[i] === t[j]){
+                x = j; // start t string from next
+                c++; // how many characters are matched
+                break;
             }
         }
-        $ans=[];
-        foreach($frq as $k=>$v){
-            $ans[] = $v . " " . $k;
-        }
-        return $ans;
     }
-}
+    return c===s.length??false;
+};
 ```
 
-## Find Common Characters
-Problem Link: https://leetcode.com/problems/find-common-characters/
+## Two Sum II - Input Array Is Sorted
+Problem Link: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
 
-```php
-class Solution {
+```javascript
+function bs(arr, target){ 
+    var st = 0;
+    var end = arr.length-1;
+    var mid = Math.floor((st+end)/2); 
+    while(arr[mid] !== target && st <= end){ 
+        if(arr[mid] < target){ 
+            st = mid+1;
+        }else end = mid-1;
+        mid = Math.floor((st+end)/2);
+    } 
+    return arr[mid]===target? mid:-1;
+}
+/**
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(numbers, target) {
+    for(var i=0; i<numbers.length; i++){
+        let temp = numbers;
+        let rest = target-numbers[i]
+        temp[i] = -10032; 
+        let ans = bs(temp, rest); 
+        if(ans === -1) continue;
+        return [i+1, ans+1];
+    }
+};
+```
 
-    /**
-     * @param String[] $words
-     * @return String[]
-     */
-    function commonChars($words) {
-        $freq = array_fill(0,26,[]); 
-        foreach($words as $w){
-            $freqw = array_count_values(str_split($w));
-            for($i=0;$i<26;$i++){
-                if(!isset($freqw[chr(97+$i)])){
-                    $freq[$i][] = 0;
-                }else{
-                    $freq[$i][] = $freqw[chr(97+$i)];
-                }
+## Peak Index in a Mountain Array
+Problem Link: https://leetcode.com/problems/peak-index-in-a-mountain-array/description/
+
+```javascript
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+var peakIndexInMountainArray = function(arr) {
+    var st = 0;
+    var end = arr.length-1;
+    var mid = Math.floor((st+end)/2); 
+    while(st <= end){ 
+        if(mid===0) st = mid+1;
+        else if(arr[mid-1] < arr[mid] && arr[mid] > arr[mid+1]) return mid;
+        else if(arr[mid-1] <= arr[mid] && arr[mid] <= arr[mid+1]) st = mid+1;
+        else end = mid-1;
+        mid = Math.floor((st+end)/2);
+    } 
+    return arr[mid];
+};
+```
+
+## 	The K Weakest Rows in a Matrix
+Problem Link: https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/description/
+
+```javascript
+class Node{
+    constructor(row, power){
+        this.row = row;
+        this.power = power;
+    }
+}
+class minBinaryHeap{
+    constructor(){
+        this.heap = [];
+    }
+    insert(val){ 
+        this.heap.push(val);
+        this.bubbleUP(); 
+    }
+    bubbleUP(){
+        var i=this.heap.length-1;
+        var ele = this.heap[i];
+        while(i>0){
+            var j = Math.floor((i-1)/2);
+            var par = this.heap[j];
+            if(par.power<ele.power || (par.power===ele.power && par.row<ele.row)) break;
+            this.heap[j] = ele;
+            this.heap[i] = par;
+            i=j;
+        }
+    }
+    getMin(){
+        let min = this.heap[0];
+        let last = this.heap.pop();
+        if(this.heap.length>0){
+            this.heap[0] = last;
+            this.sinkDown();
+        }
+        return min;
+    }
+    sinkDown(){
+        var i=0;
+        var ele = this.heap[i];
+        var len = this.heap.length;
+        
+        while(true){
+            let L = i * 2 + 1;
+            let R = i * 2 + 2;
+            let Lchild, Rchild;
+            let swap = null; 
+            if(L<len){
+                Lchild = this.heap[L];
+                if(Lchild.power < ele.power) swap = L; 
+                else if (Lchild.power === ele.power && Lchild.row < ele.row) swap = L;
             } 
-        }
-        $ans = "";
-        for($i=0; $i<26; $i++)
-        {
-            $n = min($freq[$i]); $ans .= str_repeat(chr(97+$i), $n);
-        }
-        echo $ans;
-        return $ans?str_split($ans):[];
-    }
-      
-}
-```
-
-## 	Find Words That Can Be Formed by Characters
-Problem Link: https://leetcode.com/problems/find-words-that-can-be-formed-by-characters/
-
-```php
-class Solution {
-
-    /**
-     * @param String[] $words
-     * @param String $chars
-     * @return Integer
-     */
-    function countCharacters($words, $chars) {
-        $charFrq = array_count_values(str_split($chars)); 
-        $ans = 0;
-        for($i=0; $i<count($words); $i++){
-            $org = $charFrq;
-            $form = true; 
-            for($j=0; $j<strlen($words[$i]); $j++){ 
-                if(!isset($charFrq[$words[$i][$j]]) || !$charFrq[$words[$i][$j]]){
-                    $form=false; break;
-                }
-                else if($charFrq[$words[$i][$j]] > 0) $charFrq[$words[$i][$j]]--; 
+            if(R<len){
+                Rchild = this.heap[R];
+                if(swap===null){
+                    if(Rchild.power < ele.power) swap = R;
+                    else if(Rchild.power === ele.power && Rchild.row < ele.row) swap = R;
+                } 
+                else if(swap!==null){
+                    if(Rchild.power < Lchild.power) swap = R;
+                    else if(Rchild.power === Lchild.power && Rchild.row < Lchild.row) swap = R;
+                } 
             } 
-            $charFrq = $org;
-            if($form) $ans+=strlen($words[$i]); 
+            if(swap===null) break;
+            this.heap[i] = this.heap[swap];
+            this.heap[swap] = ele;
+            i = swap;
         }
-        return $ans;
     }
 }
+function bs(arr, target){
+    var st = 0;
+    var end = arr.length-1;
+    var mid = Math.floor((st+end)/2);
+    var last1 = -1;
+    while(st <= end){
+        if(arr[mid] === 1){
+            last1 = mid;
+            st = mid+1;
+        }else end = mid-1;
+        mid = Math.floor((st+end)/2);
+    }
+    return last1;
+}
+/**
+ * @param {number[][]} mat
+ * @param {number} k
+ * @return {number[]}
+ */
+var kWeakestRows = function(mat, k) {
+    var MBH = new minBinaryHeap();
+    for(var i=0; i<mat.length; i++) MBH.insert(new Node(i, bs(mat[i], 1)+1)); 
+    let ans = [];
+    for(var i=0; i<k; i++) ans.push(MBH.getMin().row);  
+    return ans;
+};
 ```
 
-## Island Perimeter
-Problem Link: https://leetcode.com/problems/island-perimeter/
+## Count Negative Numbers in a Sorted Matrix
+Problem Link: https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/description/
 
-```php
-class Solution {
-
-    /**
-     * @param Integer[][] $grid
-     * @return Integer
-     */
-    function islandPerimeter($grid) {
-        for($i=0; $i<count($grid); $i++){
-            for($j=0; $j<count($grid[$i]); $j++){
-                if($grid[$i][$j]==1){
-                  $grid[$i][$j] = 4;
-                    if($i>0){
-                        if($grid[$i-1][$j]!=0){
-                            $grid[$i][$j]--;
-                            $grid[$i-1][$j]--;
-                        }
-                    }
-                    if($j>0){
-                        if($grid[$i][$j-1]!=0){
-                            $grid[$i][$j]--;
-                            $grid[$i][$j-1]--;
-                        }
-                    }  
-                }
-            }
-        }
-        $ans = 0;
-        for($i=0; $i<count($grid); $i++)
-            for($j=0; $j<count($grid[$i]); $j++)
-                $ans+=$grid[$i][$j];
-        return $ans;
-    }
+```javascript
+function binarySearch(arr, target){
+    var firstAppear = -1;
+    var start = 0;
+    var end = arr.length - 1;
+    var mid = Math.floor((start+end)/2);
+    while(start <= end){  
+        if(arr[mid] < target) {firstAppear = mid; end = mid-1;}
+        else start = mid+1; 
+        mid = Math.floor((start+end)/2);
+    } 
+    return firstAppear; 
 }
-```
-
-## Single Number
-Problem Link: https://leetcode.com/problems/single-number/
-
-```php
-class Solution {
-
-    /**
-     * @param Integer[] $nums
-     * @return Integer
-     */
-    function singleNumber($nums) {
-        $frq = array_count_values($nums);
-        foreach($frq as $k=>$v){
-            if($v==1) return $k;
-        }
-    }
-}
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var countNegatives = function(grid) {
+   var count = 0;
+   for(var i=0; i<grid.length; i++){ 
+       var res = binarySearch(grid[i], 0); 
+       if(res!==-1) count+=grid[i].length-res;
+   } 
+   return count;
+};
 ```
