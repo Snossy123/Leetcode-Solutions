@@ -1,24 +1,35 @@
-## Arranging Coins
-Problem Link: https://leetcode.com/problems/arranging-coins/description/
+## Arrays - DS
+Problem Link: [https://leetcode.com/problems/arranging-coins/description/](https://hackerrank.com/challenges/arrays-ds/problem)
 
-```javascript
-/**
- * @param {number} n
- * @return {number}
- */
-var arrangeCoins = function(n) {
-    let s = 1;
-    let end = n;
-    let mid = Math.floor((s+end)/2);
-    while(s<=end){
-        let midfilled = mid*(mid+1)/2;
-        if(midfilled===n)return mid;
-        else if(midfilled<n) s=mid+1;
-        else end = mid-1;
-        mid = Math.floor((s+end)/2);
+```php
+<?php
+function reverseArray($a) {
+    $n = count($a);
+    for($i=0; $i<$n/2; $i++){
+        // swap(i, n-i-1)
+        $x = $a[$i];
+        $a[$i] = $a[$n-$i-1];
+        $a[$n-$i-1] = $x;
     }
-    return s-1;
-};
+    foreach($a as $b){
+        echo $b . "\n";
+    }
+    return $a;
+}
+
+$fptr = fopen(getenv("OUTPUT_PATH"), "w");
+
+$arr_count = intval(trim(fgets(STDIN)));
+
+$arr_temp = rtrim(fgets(STDIN));
+
+$arr = array_map('intval', preg_split('/ /', $arr_temp, -1, PREG_SPLIT_NO_EMPTY));
+
+$res = reverseArray($arr);
+
+fwrite($fptr, implode(" ", $res) . "\n");
+
+fclose($fptr);
 ```
 
 ## Search Insert Position
