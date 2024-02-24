@@ -1,5 +1,5 @@
 ## Arrays - DS
-Problem Link: [https://leetcode.com/problems/arranging-coins/description/](https://hackerrank.com/challenges/arrays-ds/problem)
+Problem Link: https://hackerrank.com/challenges/arrays-ds/problem
 
 ```php
 <?php
