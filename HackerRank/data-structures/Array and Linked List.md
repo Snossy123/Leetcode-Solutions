@@ -117,3 +117,38 @@ fwrite($fptr, implode("\n", $result) . "\n");
 fclose($fptr);
 ```
 
+## Left Rotation
+Problem Link: https://hackerrank.com/challenges/array-left-rotation/problem
+
+```php
+<?php
+function rotateLeft($d, $arr) {
+    $arr2 = array();
+    for ($k = $d; $k < count($arr); $k++) {
+        $arr2[] = $arr[$k];
+    }
+    for ($i = 0; $i < $d; $i++) {
+        $arr2[] = $arr[$i];
+    }
+    return $arr2;
+}
+
+$fptr = fopen(getenv("OUTPUT_PATH"), "w");
+
+$first_multiple_input = explode(' ', rtrim(fgets(STDIN)));
+
+$n = intval($first_multiple_input[0]);
+
+$d = intval($first_multiple_input[1]);
+
+$arr_temp = rtrim(fgets(STDIN));
+
+$arr = array_map('intval', preg_split('/ /', $arr_temp, -1, PREG_SPLIT_NO_EMPTY));
+
+$result = rotateLeft($d, $arr);
+
+fwrite($fptr, implode(" ", $result) . "\n");
+
+fclose($fptr);
+```
+
