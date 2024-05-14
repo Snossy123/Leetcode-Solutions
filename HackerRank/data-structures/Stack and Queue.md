@@ -79,14 +79,6 @@ Problem Link: https://hackerrank.com/challenges/balanced-brackets/problem
 
 ```php
 <?php
-
-/*
- * Complete the 'isBalanced' function below.
- *
- * The function is expected to return a STRING.
- * The function accepts STRING s as parameter.
- */
-
 function isBalanced($s) {
     $st = [];
     for($ch=0; $ch<strlen($s); $ch++){
