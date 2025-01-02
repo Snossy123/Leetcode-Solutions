@@ -255,3 +255,24 @@ class Solution {
     }
 }
 ```
+
+## Running Sum of 1d Array
+Problem Link: https://leetcode.com/problems/running-sum-of-1d-array/description/
+
+```php
+class Solution {
+
+    /**
+     * @param Integer[] $nums
+     * @return Integer[]
+     */
+    function runningSum($nums) {
+        $runningSum = [];
+        array_push($runningSum, $nums[0]);
+        for($i = 1; $i<count($nums); $i++){
+            array_push($runningSum, $runningSum[$i-1]+$nums[$i]);
+        }
+        return $runningSum;
+    }
+}
+```
