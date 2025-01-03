@@ -276,3 +276,39 @@ class Solution {
     }
 }
 ```
+
+## Richest Customer Wealth
+Problem Link: https://leetcode.com/problems/richest-customer-wealth/description/
+
+```php
+class Solution {
+
+    /**
+     * @param Integer[][] $accounts
+     * @return Integer
+     */
+    function maximumWealth($accounts) {
+        return max(array_map(fn($account)=>array_sum($account), $accounts));
+    }
+}
+```
+```php
+class Solution {
+
+    /**
+     * @param Integer[][] $accounts
+     * @return Integer
+     */
+    function maximumWealth($accounts) {
+        $biggest = 0;
+        for($i=0; $i < count($accounts); $i++){
+            $curr = 0;
+            for($j=0; $j < count($accounts[$i]); $j++){
+                $curr += $accounts[$i][$j];
+            }
+            $biggest = max($biggest, $curr);
+        }
+        return $biggest; 
+    }
+}
+```
