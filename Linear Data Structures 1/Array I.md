@@ -335,3 +335,25 @@ class Solution {
     }
 }
 ```
+
+## Decompress Run-Length Encoded List
+Problem Link: https://leetcode.com/problems/decompress-run-length-encoded-list/description/
+
+```php
+class Solution {
+
+    /**
+     * @param Integer[] $nums
+     * @return Integer[]
+     */
+    function decompressRLElist($nums) {
+        $ans = [];
+        for($i=0; $i<count($nums)/2; $i++){
+            [$freq, $val] = [$nums[2*$i], $nums[2*$i+1]];
+            $arr = array_fill(0, $freq, $val);
+            $ans = array_merge($ans, $arr);
+        } 
+        return $ans;
+    }
+}
+```
