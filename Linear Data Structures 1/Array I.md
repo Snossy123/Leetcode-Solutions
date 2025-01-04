@@ -357,3 +357,24 @@ class Solution {
     }
 }
 ```
+## Count Items Matching a Rule
+Problem Link: https://leetcode.com/problems/count-items-matching-a-rule/description/
+
+```php
+class Solution {
+
+    /**
+     * @param String[][] $items
+     * @param String $ruleKey
+     * @param String $ruleValue
+     * @return Integer
+     */
+    function countMatches($items, $ruleKey, $ruleValue) {
+        $ans=0;
+        foreach($items as [$type, $color, $name]){
+            $ans += $$ruleKey==$ruleValue??0; 
+        }
+        return $ans;
+    }
+}
+```
