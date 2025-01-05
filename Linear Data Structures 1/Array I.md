@@ -378,3 +378,25 @@ class Solution {
     }
 }
 ```
+
+## XOR Operation in an Array
+Problem Link: https://leetcode.com/problems/xor-operation-in-an-array/description/
+
+```php
+class Solution {
+
+    /**
+     * @param Integer $n
+     * @param Integer $start
+     * @return Integer
+     */
+    function xorOperation($n, $start) {
+        $x = $start;
+        for($i=1; $i<$n; $i++){
+            $y = $start + 2 * $i;
+            $x ^= $y;
+        }
+        return $x;
+    }
+}
+```
